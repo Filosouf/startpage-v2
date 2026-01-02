@@ -2,7 +2,7 @@
 node_modules/
 
 # Build output
-dist/
+# dist/ - Kommentert ut for GitHub Pages (uncomment hvis du ikke bruker GitHub Actions)
 
 # Logs
 *.log
