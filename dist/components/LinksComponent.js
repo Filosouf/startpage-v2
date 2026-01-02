@@ -50,7 +50,7 @@ export class LinksComponent extends Component {
                     { name: 'E-post', url: 'https://gmail.com' },
                     { name: 'Lib', url: 'https://z-library.sk/' },
                     { name: 'NTS', url: 'https://www.nevertoosmall.com/' },
-                    { name: 'Tek', url: 'https://www.tekno.no/' },
+                    { name: 'Tek', url: 'https://www.tek.no/' },
                     { name: 'Kode24', url: 'https://www.kode24.no/' }
                 ]
             }
