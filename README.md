@@ -155,3 +155,7 @@ startpage-v2/
 - Komponenter kan være resizable eller ikke (konfigurerbart)
 - Alle komponenter arver fra base Component-klassen
 - WindowManager håndterer drag-and-drop, resize og posisjonering
+
+## Kjente problemer
+
+Se [KNOWN_ISSUES.md](./KNOWN_ISSUES.md) for dokumentasjon av kjente bugs og problemer.
