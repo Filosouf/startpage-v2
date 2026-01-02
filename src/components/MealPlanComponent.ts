@@ -138,7 +138,7 @@ export class MealPlanComponent extends Component {
 
     return `
       <div class="mealplan-window">
-        <div class="mealplan-header">
+        <div class="mealplan-header drag-handle">
           <h3>🍽️ Matplan</h3>
         </div>
         <div class="mealplan-content">

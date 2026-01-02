@@ -156,6 +156,10 @@ export class WindowManager {
         if (target.classList.contains('resize-handle') || target.closest('.resize-handle')) {
             return; // La resize handle håndtere resize i stedet
         }
+        // Kun tillat drag hvis vi klikker på drag-handle (header-området)
+        if (!target.closest('.drag-handle')) {
+            return; // Ikke dra hvis vi ikke klikker på et drag-handle område
+        }
         this.dragging = component;
         this.bringToFront(component);
         const rect = element.getBoundingClientRect();

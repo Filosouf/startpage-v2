@@ -308,6 +308,11 @@ body, html {
     user-select: none;
 }
 
+/* Drag handle styling */
+.drag-handle {
+    cursor: move;
+}
+
 .mealplan-header h3 {
     margin: 0;
     font-size: var(--categorytitlefontsize);

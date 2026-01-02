@@ -27,7 +27,7 @@ export class ClockComponent extends Component {
     const seconds = date.getSeconds().toString().padStart(2, '0');
     
     return `
-      <div class="clock-window">
+      <div class="clock-window drag-handle">
         <div class="clock-display">${hours}:${minutes}:${seconds}</div>
       </div>
     `;

@@ -66,10 +66,10 @@ export class LinksComponent extends Component {
         return `
       <div class="window-bg">
         <div class="front-img" style="background-image: url('${this.frontImageUrl}')"></div>
-        <div class="titlediv">
+        <div class="titlediv drag-handle">
           <div id="titleb">${this.title}</div>
         </div>
-        <div class="windowbackgroundarea1">
+        <div class="windowbackgroundarea1 drag-handle">
           <div id="Subtitle">${this.subtitle}</div>
         </div>
         <div class="windowbackgroundarea2">

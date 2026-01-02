@@ -28,7 +28,7 @@ export class WeatherComponent extends Component {
       : 'Henter væropplysninger...';
 
     return `
-      <div class="weather-box" onclick="window.open('https://www.yr.no/nb/sted/Norge/Vestland/Bergen/Bergen/', '_blank')">
+      <div class="weather-box drag-handle" onclick="window.open('https://www.yr.no/nb/sted/Norge/Vestland/Bergen/Bergen/', '_blank')">
         Vær - ${weatherText}
       </div>
     `;
