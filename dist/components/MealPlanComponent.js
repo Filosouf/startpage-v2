@@ -112,6 +112,7 @@ export class MealPlanComponent extends Component {
       <div class="mealplan-window">
         <div class="mealplan-header drag-handle">
           <h3>🍽️ Matplan</h3>
+          <button class="print-button" title="Skriv ut matplan">🖨️</button>
         </div>
         <div class="mealplan-content">
           <div class="meal-section">
@@ -161,6 +162,248 @@ export class MealPlanComponent extends Component {
         `).join('')}
       </div>
     `;
+    }
+    onMount() {
+        super.onMount();
+        this.setupPrintButton();
+    }
+    onUpdate() {
+        super.onUpdate();
+        this.setupPrintButton();
+    }
+    setupPrintButton() {
+        const element = this.getElement();
+        if (!element)
+            return;
+        const printButton = element.querySelector('.print-button');
+        if (printButton) {
+            printButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.printMealPlan();
+            });
+        }
+    }
+    printMealPlan() {
+        const { mealPlan } = this.mealPlanData;
+        const printWindow = window.open('', '_blank');
+        if (!printWindow) {
+            alert('Popup-blocker er aktivert. Tillat popups for å kunne skrive ut.');
+            return;
+        }
+        const printContent = `
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matplan</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 1cm;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 9pt;
+      line-height: 1.3;
+      color: #000;
+      background: #fff;
+      padding: 0;
+    }
+    
+    .print-header {
+      text-align: center;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #000;
+      padding-bottom: 8px;
+    }
+    
+    .print-header h1 {
+      font-size: 18pt;
+      margin-bottom: 3px;
+    }
+    
+    .print-header .date {
+      font-size: 8pt;
+      color: #666;
+    }
+    
+    .print-section {
+      margin-bottom: 10px;
+      page-break-inside: avoid;
+    }
+    
+    .print-section h2 {
+      font-size: 12pt;
+      margin-bottom: 5px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 2px;
+      text-transform: uppercase;
+    }
+    
+    .meal-options {
+      margin-left: 10px;
+    }
+    
+    .meal-option {
+      margin-bottom: 6px;
+      padding: 4px 6px;
+      background-color: #f9f9f9;
+      border-left: 2px solid #333;
+      padding-left: 8px;
+    }
+    
+    .meal-option strong {
+      display: block;
+      font-size: 10pt;
+      margin-bottom: 2px;
+      color: #000;
+    }
+    
+    .meal-option ul {
+      margin-left: 15px;
+      margin-top: 2px;
+    }
+    
+    .meal-option li {
+      margin-bottom: 1px;
+      font-size: 8.5pt;
+    }
+    
+    .print-section ul {
+      margin-left: 15px;
+      margin-top: 4px;
+    }
+    
+    .print-section li {
+      margin-bottom: 2px;
+      font-size: 8.5pt;
+    }
+    
+    .training-rules {
+      background-color: #f0f0f0;
+      padding: 6px;
+      border: 1px solid #333;
+      margin-top: 4px;
+    }
+    
+    .training-rules p {
+      margin-bottom: 2px;
+      font-size: 8.5pt;
+    }
+    
+    .training-rules strong {
+      font-weight: bold;
+    }
+    
+    .checklist {
+      background-color: #f9f9f9;
+      padding: 6px;
+      border-left: 2px solid #333;
+    }
+    
+    @media print {
+      body {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      
+      .print-section {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="print-header">
+    <h1>🍽️ Matplan</h1>
+    <div class="date">${new Date().toLocaleDateString('no-NO', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+  </div>
+  
+  <div class="print-section">
+    <h2>Frokost</h2>
+    <div class="meal-options">
+      ${mealPlan.breakfast.map(option => `
+        <div class="meal-option">
+          <strong>${option.label}</strong>
+          <ul>
+            ${option.items.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+  
+  <div class="print-section">
+    <h2>Lunsj</h2>
+    <div class="meal-options">
+      ${mealPlan.lunch.map(option => `
+        <div class="meal-option">
+          <strong>${option.label}</strong>
+          <ul>
+            ${option.items.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+  
+  <div class="print-section">
+    <h2>Middag</h2>
+    <div class="meal-options">
+      ${mealPlan.dinner.map(option => `
+        <div class="meal-option">
+          <strong>${option.label}</strong>
+          <ul>
+            ${option.items.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+  
+  <div class="print-section">
+    <h2>Snacks</h2>
+    <ul>
+      ${mealPlan.snacks.map(snack => `<li>${snack}</li>`).join('')}
+    </ul>
+  </div>
+  
+  <div class="print-section">
+    <h2>Trening</h2>
+    <div class="training-rules">
+      <p><strong>Før trening:</strong> ${mealPlan.trainingRules.preWorkout.join(', ')}</p>
+      <p><strong>Etter trening:</strong> ${mealPlan.trainingRules.postWorkout.join(', ')}</p>
+      <p><strong>Pizza-regel:</strong> ${mealPlan.trainingRules.pizzaRule}</p>
+    </div>
+  </div>
+  
+  <div class="print-section">
+    <h2>Daglig sjekkliste</h2>
+    <div class="checklist">
+      <ul>
+        ${mealPlan.dailyChecklist.map(item => `<li>${item}</li>`).join('')}
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    window.onload = function() {
+      window.print();
+    };
+  </script>
+</body>
+</html>
+    `;
+        printWindow.document.write(printContent);
+        printWindow.document.close();
     }
 }
 //# sourceMappingURL=MealPlanComponent.js.map
